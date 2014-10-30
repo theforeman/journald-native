@@ -1,7 +1,6 @@
 # journald-native
 
-A systemd-journal native logging lib wrapper
-
+A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
 
 ## Usage
@@ -17,14 +16,14 @@ Constants are used to denote a log level
 Available constants:
 
 ```ruby
-    Journald::LOG_EMERG
-    Journald::LOG_ALERT
-    Journald::LOG_CRIT
-    Journald::LOG_ERR
-    Journald::LOG_WARNING
-    Journald::LOG_NOTICE
-    Journald::LOG_INFO
-    Journald::LOG_DEBUG
+    Journald::LOG_EMERG     # system is unusable
+    Journald::LOG_ALERT     # action must be taken immediately
+    Journald::LOG_CRIT      # critical conditions
+    Journald::LOG_ERR       # error conditions
+    Journald::LOG_WARNING   # warning conditions
+    Journald::LOG_NOTICE    # normal but significant condition
+    Journald::LOG_INFO      # informational
+    Journald::LOG_DEBUG     # debug-level messages
 ```
 
 systemd-journal uses syslog constants to denote level therefore they are equal to those of the Syslog module,
