@@ -1,5 +1,7 @@
 # journald-native
 
+[![Gem Version](https://badge.fury.io/rb/journald-native.svg)](http://badge.fury.io/rb/journald-native)
+
 A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
 
