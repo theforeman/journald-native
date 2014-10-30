@@ -4,7 +4,7 @@
 #include <ruby.h>
 #include <systemd/sd-journal.h>
 
-void Init_journald_logger();
+void Init_journald_native();
 
 /* initializers */
 static void jdl_init_modules();
@@ -23,7 +23,7 @@ static char * jdl_alloc_safe_string(VALUE string);
 static VALUE mJournald;
 static VALUE mNative;
 
-void Init_journald_logger()
+void Init_journald_native()
 {
     jdl_init_modules();
     jdl_init_constants();

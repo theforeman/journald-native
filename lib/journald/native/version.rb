@@ -1,5 +1,5 @@
 module Journald
-  module Logger
+  module Native
     VERSION = '0.0.1'
   end
 end
