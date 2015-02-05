@@ -2,7 +2,7 @@
 #define SD_JOURNAL_SUPPRESS_LOCATION
 
 #include <ruby.h>
-#include <systemd/sd-journal.h>
+#include "sd_journal.h"
 
 void Init_journald_native();
 
@@ -73,7 +73,7 @@ static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self)
 {
     struct iovec *msgs;
-    size_t i;
+    int i;
     int result;
 
     /* first check everything is a string / convertable to string */

@@ -9,12 +9,27 @@ LIB_DIRS = [LIBDIR]
 
 dir_config('systemd', HEADER_DIRS, LIB_DIRS)
 
-# check headers
-abort 'systemd/sd-journal.h is missing. please install systemd-journal' unless find_header('systemd/sd-journal.h')
+def have_funcs
+  have_funcs = true
 
-# check functions
-%w(sd_journal_print sd_journal_sendv sd_journal_perror).each do |func|
-   abort "#{func}() is missing. systemd-journal is not usable" unless find_library('systemd-journal', func)
+  # check functions. redefine const list in sd_journal.h if changed
+  %w(sd_journal_print sd_journal_sendv sd_journal_perror).each do |func|
+    have_funcs &&= have_func(func)
+  end
+
+  have_funcs
 end
 
+# check headers
+have_header('systemd/sd-journal.h')
+
+# first try to find funcs in systemd
+have_library('systemd')
+
+unless have_funcs
+  have_library('systemd-journal') # try to fall back to systemd-journal if older systemd
+end
+
+create_header
 create_makefile('journald_native')
+

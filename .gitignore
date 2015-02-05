@@ -26,3 +26,4 @@ Makefile
 *.iws
 .rakeTasks
 .idea
+extconf.h
