@@ -28,6 +28,7 @@ have_library('systemd')
 
 unless have_funcs
   have_library('systemd-journal') # try to fall back to systemd-journal if older systemd
+  have_funcs
 end
 
 create_header
