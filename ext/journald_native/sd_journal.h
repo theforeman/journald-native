@@ -54,9 +54,17 @@
             size_t iov_len;     /* Number of bytes to transfer */
         };
 
-        int sd_journal_print(int priority, const char *format, ...);
-        int sd_journal_sendv(const struct iovec *iov, int n);
-        int sd_journal_perror(const char *message);
+        #ifdef __cplusplus
+        extern "C" {
+        #endif
+
+            int sd_journal_print(int priority, const char *format, ...);
+            int sd_journal_sendv(const struct iovec *iov, int n);
+            int sd_journal_perror(const char *message);
+
+        #ifdef __cplusplus
+        }
+        #endif
 
     #endif
 
