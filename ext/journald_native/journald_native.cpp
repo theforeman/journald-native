@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "cpp14shiv.h" // make this c++14 code c++11 compatible; remove for c++14
+
 namespace journald_native {
 
 /* initializers */
