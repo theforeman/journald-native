@@ -86,10 +86,11 @@ std::string create_safe_string(VALUE v_string)
     // raising any ruby exception will not run any of the C++ destructors so get all required Ruby data first,
     // then use some objects
 
-    std::string safe_str = "";
-
-    char * str = RSTRING_PTR(v_string);
+    char*  str = RSTRING_PTR(v_string);
     size_t len = RSTRING_LEN(v_string);
+
+    std::string safe_str;
+    safe_str.reserve(len);
 
     for (size_t i = 0; i < len; i++) {
         if (str[i]) {
