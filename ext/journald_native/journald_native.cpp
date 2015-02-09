@@ -40,7 +40,7 @@ void init_methods(VALUE module)
 VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 {
     int  priority = NUM2INT(v_priority);
-    auto message  = create_safe_string(v_message);
+    auto message  = create_safe_string(v_message); // ruby exception here
 
     int  result   = sd_journal_print(priority, "%s", message.c_str());
 
@@ -49,10 +49,14 @@ VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 
 VALUE native_send(int argc, VALUE* argv, VALUE self)
 {
+    for (int i = 0; i < argc; i++) {
+        StringValue(argv[i]); // ruby exception here
+    }
+
     auto msgs = std::make_unique<iovec[]>(argc);
 
     for (int i = 0; i < argc; i++) {
-        VALUE v = StringValue(argv[i]);
+        VALUE v = argv[i];
 
         msgs[i].iov_base = RSTRING_PTR(v);
         msgs[i].iov_len  = RSTRING_LEN(v);
@@ -65,7 +69,7 @@ VALUE native_send(int argc, VALUE* argv, VALUE self)
 
 VALUE native_perror(VALUE v_self, VALUE v_message)
 {
-    auto message = create_safe_string(v_message);
+    auto message = create_safe_string(v_message); // ruby exception here
 
     int  result  = sd_journal_perror(message.c_str());
 
@@ -77,10 +81,12 @@ VALUE native_perror(VALUE v_self, VALUE v_message)
  */
 std::string create_safe_string(VALUE v_string)
 {
-    std::string safe_str = "";
-
     /* convert to string */
-    StringValue(v_string);
+    StringValue(v_string); // ruby exception here
+    // raising any ruby exception will not run any of the C++ destructors so get all required Ruby data first,
+    // then use some objects
+
+    std::string safe_str = "";
 
     char * str = RSTRING_PTR(v_string);
     size_t len = RSTRING_LEN(v_string);
