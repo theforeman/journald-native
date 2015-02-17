@@ -16,7 +16,7 @@ namespace journald_native {
     VALUE native_perror(VALUE self, VALUE message);
 
     /* aux */
-    std::string create_safe_string(VALUE string);
+    std::string create_safe_string(VALUE string); // throws ruby exceptions
 }
 
 #endif // JOURNALD_NATIVE_JOURNALD_NATIVE_H
