@@ -19,4 +19,4 @@ namespace journald_native {
     std::string create_safe_string(VALUE string);
 }
 
-#endif
+#endif // JOURNALD_NATIVE_JOURNALD_NATIVE_H
