@@ -17,7 +17,7 @@ namespace ruby_exception_wrapper {
     };
 
     // callback for rb_rescue2 to catch ruby exception and wrap it by RbWrappedException
-    VALUE rethrow_as_cpp(VALUE unused, VALUE exception);
+    VALUE rethrow_as_cpp(VALUE put_exception_here_ptr, VALUE exception);
 
     namespace {
         // do real call of function from template for func with params
@@ -53,11 +53,17 @@ namespace ruby_exception_wrapper {
 
             CallTuple call_tuple = std::make_tuple(fp, args...);
 
+            VALUE exception = 0; // get raised exception if any
+
             auto result = rb_rescue2(
                     RUBY_METHOD_FUNC(call_wrapper_tuple<CallTuple>), reinterpret_cast<VALUE>(&call_tuple),
-                    RUBY_METHOD_FUNC(rethrow_as_cpp), Qnil,
+                    RUBY_METHOD_FUNC(rethrow_as_cpp), reinterpret_cast<VALUE>(&exception),
                     rb_eException, Qfalse
             );
+
+            if (exception) { // nonzero here if rescue called unless some pervert throws Qfalse
+                throw RbWrappedException(exception);
+            }
 
             return result;
         }

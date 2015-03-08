@@ -56,7 +56,7 @@ VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     try {
         return native_print_impl(v_self, v_priority, v_message);
     } catch(ruby_exception_wrapper::RbWrappedException &e) {
-        return INT2NUM(-1);
+        rb_exc_raise(e.getRubyException());
     }
 }
 
@@ -65,7 +65,7 @@ VALUE native_send(int argc, VALUE* argv, VALUE v_self)
     try {
         return native_send_impl(argc, argv, v_self);
     } catch(ruby_exception_wrapper::RbWrappedException &e) {
-        return INT2NUM(-1);
+        rb_exc_raise(e.getRubyException());
     }
 }
 
@@ -74,7 +74,7 @@ VALUE native_perror(VALUE v_self, VALUE v_message)
     try {
         return native_perror_impl(v_self, v_message);
     } catch(ruby_exception_wrapper::RbWrappedException &e) {
-        return INT2NUM(-1);
+        rb_exc_raise(e.getRubyException());
     }
 }
 
