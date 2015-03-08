@@ -8,7 +8,7 @@ LIB_DIRS    = [LIBDIR]
 
 dir_config('systemd', HEADER_DIRS, LIB_DIRS)
 
-$CPPFLAGS = '-std=c++11'
+$CPPFLAGS = '-std=c++14'
 
 def have_funcs
   have_funcs = true

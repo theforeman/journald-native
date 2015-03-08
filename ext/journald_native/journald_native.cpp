@@ -3,9 +3,24 @@
 
 #include <memory>
 
-#include "cpp14shiv.h" // make this c++14 code c++11 compatible; remove for c++14
+#include "ruby_exception_wrapper.h"
 
 namespace journald_native {
+
+/* initializers */
+void init_constants(VALUE module);
+void init_methods(VALUE module);
+
+/* methods */
+VALUE native_print(VALUE self, VALUE priority, VALUE message);
+VALUE native_send(int argc, VALUE* argv, VALUE self);
+VALUE native_perror(VALUE self, VALUE message);
+VALUE native_print_impl(VALUE v_self, VALUE v_priority, VALUE v_message);
+VALUE native_send_impl(int argc, VALUE* argv, VALUE self);
+VALUE native_perror_impl(VALUE v_self, VALUE v_message);
+
+/* aux */
+std::string create_safe_string(VALUE string); // throws ruby exceptions
 
 /* initializers */
 void init_modules()
@@ -36,8 +51,35 @@ void init_methods(VALUE module)
     rb_define_singleton_method(module, "perror", RUBY_METHOD_FUNC(native_perror), 1);
 }
 
-/* methods */
 VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
+{
+    try {
+        return native_print_impl(v_self, v_priority, v_message);
+    } catch(ruby_exception_wrapper::RbWrappedException &e) {
+        return INT2NUM(-1);
+    }
+}
+
+VALUE native_send(int argc, VALUE* argv, VALUE v_self)
+{
+    try {
+        return native_send_impl(argc, argv, v_self);
+    } catch(ruby_exception_wrapper::RbWrappedException &e) {
+        return INT2NUM(-1);
+    }
+}
+
+VALUE native_perror(VALUE v_self, VALUE v_message)
+{
+    try {
+        return native_perror_impl(v_self, v_message);
+    } catch(ruby_exception_wrapper::RbWrappedException &e) {
+        return INT2NUM(-1);
+    }
+}
+
+/* methods */
+VALUE native_print_impl(VALUE v_self, VALUE v_priority, VALUE v_message)
 {
     int  priority = NUM2INT(v_priority);
     auto message  = create_safe_string(v_message); // ruby exception here
@@ -47,19 +89,17 @@ VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     return INT2NUM(result);
 }
 
-VALUE native_send(int argc, VALUE* argv, VALUE self)
+VALUE native_send_impl(int argc, VALUE* argv, VALUE v_self)
 {
-    for (int i = 0; i < argc; i++) {
-        StringValue(argv[i]); // ruby exception here
-    }
-
-    auto msgs = std::make_unique<iovec[]>(argc);
+    auto msgs = std::make_unique<iovec[]>((size_t)argc);
 
     for (int i = 0; i < argc; i++) {
         VALUE v = argv[i];
 
-        msgs[i].iov_base = RSTRING_PTR(v);
-        msgs[i].iov_len  = RSTRING_LEN(v);
+        ruby_exception_wrapper::ruby_raisable_call(rb_string_value(&v));
+
+        msgs[i].iov_base = (char *)RSTRING_PTR(v);
+        msgs[i].iov_len  = (size_t)RSTRING_LEN(v);
     }
 
     int result = sd_journal_sendv(msgs.get(), argc);
@@ -67,7 +107,7 @@ VALUE native_send(int argc, VALUE* argv, VALUE self)
     return INT2NUM(result);
 }
 
-VALUE native_perror(VALUE v_self, VALUE v_message)
+VALUE native_perror_impl(VALUE v_self, VALUE v_message)
 {
     auto message = create_safe_string(v_message); // ruby exception here
 
@@ -77,17 +117,15 @@ VALUE native_perror(VALUE v_self, VALUE v_message)
 }
 
 /**
- * Remove zeros from string and ensure it's zero-terminated
+ * Remove zeros from the string
  */
 std::string create_safe_string(VALUE v_string)
 {
     /* convert to string */
-    StringValue(v_string); // ruby exception here
-    // raising any ruby exception will not run any of the C++ destructors so get all required Ruby data first,
-    // then use some objects
+    ruby_exception_wrapper::ruby_raisable_call(rb_string_value, &v_string);
 
-    char*  str = RSTRING_PTR(v_string);
-    size_t len = RSTRING_LEN(v_string);
+    char*  str = (char *)RSTRING_PTR(v_string);
+    size_t len = (size_t)RSTRING_LEN(v_string);
 
     std::string safe_str;
     safe_str.reserve(len);
