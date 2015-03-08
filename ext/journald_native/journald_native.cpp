@@ -96,7 +96,7 @@ VALUE native_send_impl(int argc, VALUE* argv, VALUE v_self)
     for (int i = 0; i < argc; i++) {
         VALUE v = argv[i];
 
-        ruby_exception_wrapper::ruby_raisable_call(rb_string_value(&v));
+        ruby_exception_wrapper::ruby_raisable_call(rb_string_value, &v);
 
         msgs[i].iov_base = (char *)RSTRING_PTR(v);
         msgs[i].iov_len  = (size_t)RSTRING_LEN(v);
