@@ -7,6 +7,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "cpp14shiv.h" // make this c++14 code c++11 compatible; remove for c++14
+
 namespace ruby_exception_wrapper {
 
     class RbWrappedException: public std::exception {
@@ -24,7 +26,9 @@ namespace ruby_exception_wrapper {
         template <typename FuncPointer, typename... Args>
         inline VALUE call_wrapper_tuple_impl(FuncPointer& fp, Args... args)
         {
-            return fp(args...);
+            // only pointers and VALUE permitted
+            // VALUE guaranteed to be able to contain pointer
+            return reinterpret_cast<VALUE>(fp(args...));
         }
 
         // unpack params to do real call
@@ -55,7 +59,7 @@ namespace ruby_exception_wrapper {
 
             VALUE exception = 0; // get raised exception if any
 
-            auto result = rb_rescue2(
+            VALUE result = rb_rescue2(
                     RUBY_METHOD_FUNC(call_wrapper_tuple<CallTuple>), reinterpret_cast<VALUE>(&call_tuple),
                     RUBY_METHOD_FUNC(rethrow_as_cpp), reinterpret_cast<VALUE>(&exception),
                     rb_eException, Qfalse
@@ -65,14 +69,17 @@ namespace ruby_exception_wrapper {
                 throw RbWrappedException(exception);
             }
 
-            return result;
+            return reinterpret_cast<decltype(f(args...))>(result);
         }
     }
 
     template <typename Func, typename... Args>
     inline auto ruby_raisable_call(Func f, Args... args) -> decltype(f(args...))
     {
-        static_assert(std::is_same<decltype(f(args...)), VALUE>::value, "Currently only for funcs returning VALUE");
+        static_assert(
+                std::is_same<decltype(f(args...)), VALUE>::value || std::is_pointer<decltype(f(args...))>::value,
+                "Only for funcs returning VALUE or pointer"
+        );
 
         auto result = do_raisable_call(f, args...);
 
