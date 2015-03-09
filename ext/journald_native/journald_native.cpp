@@ -11,7 +11,7 @@ namespace journald_native {
 template <typename Func, typename... Args>
 inline auto r(Func f, Args... args) -> decltype(f(args...))
 {
-    ruby_exception_wrapper::ruby_raisable_call(f, args...);
+    return ruby_exception_wrapper::ruby_raisable_call(f, args...);
 }
 
 /* initializers */
