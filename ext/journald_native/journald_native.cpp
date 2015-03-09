@@ -103,9 +103,7 @@ inline VALUE native_send_impl(int argc, VALUE* argv, VALUE v_self)
     auto msgs = std::make_unique<iovec[]>((size_t)argc);
 
     for (int i = 0; i < argc; i++) {
-        VALUE v = argv[i];
-
-        r(rb_string_value, &v);
+        VALUE v = r(rb_string_value, &argv[i]);
 
         msgs[i].iov_base = (char *)RSTRING_PTR(v);
         msgs[i].iov_len  = (size_t)RSTRING_LEN(v);
