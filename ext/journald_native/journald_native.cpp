@@ -17,34 +17,13 @@ inline auto r(Func f, Args... args) -> decltype(f(args...))
     return ruby_exception_wrapper::ruby_raisable_call(f, args...);
 }
 
-// Remove zeros from the string
-std::string create_safe_string(VALUE v_string)
-{
-    /* convert to string */
-    r(rb_string_value, &v_string);
-
-    char*  str = (char *)RSTRING_PTR(v_string);
-    size_t len = (size_t)RSTRING_LEN(v_string);
-
-    std::string safe_str;
-    safe_str.reserve(len);
-
-    for (size_t i = 0; i < len; i++) {
-        if (str[i]) {
-            safe_str += str[i];
-        }
-    }
-
-    return safe_str;
-}
-
 /* methods */
 inline VALUE native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 {
-    int  priority = NUM2INT(v_priority);
-    auto message  = create_safe_string(v_message);
+    int         priority = NUM2INT(v_priority);
+    std::string message  = r(rb_string_value_cstr, &v_message);
 
-    int  result   = sd_journal_print(priority, "%s", message.c_str());
+    int         result   = sd_journal_print(priority, "%s", message.c_str());
 
     return INT2NUM(result);
 }
@@ -67,9 +46,9 @@ inline VALUE native_send(int argc, VALUE* argv, VALUE v_self)
 
 inline VALUE native_perror(VALUE v_self, VALUE v_message)
 {
-    auto message = create_safe_string(v_message);
+    std::string message = r(rb_string_value_cstr, &v_message);
 
-    int  result  = sd_journal_perror(message.c_str());
+    int         result  = sd_journal_perror(message.c_str());
 
     return INT2NUM(result);
 }

@@ -44,9 +44,9 @@ Journald::Native.print Journald::LOG_WARNING, "message"
 Journald::Native.perror "message"
 ```
 
-It is not recommended to use ```print``` and ```perror``` as you may lose ```'\0'``` byte in your string due to
-C zero-terminated string format (all zero bytes in the middle will be removed) On the contrary ```send``` uses
-binary buffers and does not have this shortcoming.
+It is not recommended to use ```print``` and ```perror``` as you may get exception if your string contains
+```'\0'``` byte due to C zero-terminated string format. On the contrary ```send``` uses binary buffers and
+does not have this shortcoming.
 
 ### License
 
