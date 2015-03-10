@@ -9,6 +9,10 @@
 
 #include "cpp14shiv.h" // make this c++14 code c++11 compatible; remove for c++14
 
+// wrap functions, prototype required, i.e. RXW_WRAPPED_METHOD_FUNC(native_send, int, VALUE*, VALUE)
+// functions can be inline
+#define RXW_WRAPPED_METHOD_FUNC(method, ...) ((VALUE (*)(ANYARGS))::ruby_exception_wrapper::method_wrapper_call<decltype(&method), method, __VA_ARGS__>)
+
 namespace ruby_exception_wrapper {
 
     class RbWrappedException: public std::exception {
@@ -22,7 +26,7 @@ namespace ruby_exception_wrapper {
     VALUE rethrow_as_cpp(VALUE put_exception_here_ptr, VALUE exception);
 
     namespace {
-        // do real call of function from template for func with params
+        // do real call of function from template
         template <typename FuncPointer, typename... Args>
         inline VALUE call_wrapper_tuple_impl(FuncPointer& fp, Args... args)
         {
@@ -84,6 +88,16 @@ namespace ruby_exception_wrapper {
         auto result = do_raisable_call(f, args...);
 
         return result;
+    }
+
+    template <typename Func, Func func, typename... Args>
+    VALUE method_wrapper_call(Args... args)
+    {
+        try {
+            return func(args...);
+        } catch(RbWrappedException &e) {
+            rb_exc_raise(e.getRubyException());
+        }
     }
 
 }

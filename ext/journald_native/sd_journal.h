@@ -3,6 +3,8 @@
 
 #ifdef __linux__
 
+    #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY false
+
     /* do the real stuff */
 
     #include "extconf.h"
@@ -31,6 +33,8 @@
     #include <systemd/sd-journal.h>
 
 #else
+
+    #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY true
 
     #warning Compiling dummy version of the gem for non-Linux OS
 
