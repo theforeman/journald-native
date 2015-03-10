@@ -1,3 +1,5 @@
+# dummy cmake file for CLion
+
 cmake_minimum_required(VERSION 2.8.4)
 project(journald_native)
 
