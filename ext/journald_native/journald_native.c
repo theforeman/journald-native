@@ -15,9 +15,7 @@ static void jdl_init_methods();
 static VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
 static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self);
 static VALUE jdl_native_perror(VALUE self, VALUE message);
-
-/* aux */
-static char * jdl_alloc_safe_string(VALUE string);
+static VALUE jdl_native_is_dummy();
 
 /* globals */
 static VALUE mJournald;
@@ -46,6 +44,9 @@ static void jdl_init_constants()
     rb_define_const(mJournald, "LOG_NOTICE",  INT2NUM(LOG_NOTICE));   /* normal but significant condition */
     rb_define_const(mJournald, "LOG_INFO",    INT2NUM(LOG_INFO));     /* informational */
     rb_define_const(mJournald, "LOG_DEBUG",   INT2NUM(LOG_DEBUG));    /* debug-level messages */
+
+    // dummy detection const
+    rb_define_const(mNative,   "IS_DUMMY",    jdl_native_is_dummy());
 }
 
 static void jdl_init_methods()
@@ -53,6 +54,9 @@ static void jdl_init_methods()
     rb_define_singleton_method(mNative, "print",  jdl_native_print,  2);
     rb_define_singleton_method(mNative, "send",   jdl_native_send,  -1); /* -1 to pass as C array */
     rb_define_singleton_method(mNative, "perror", jdl_native_perror, 1);
+
+    // dummy detection method
+    rb_define_singleton_method(mNative, "dummy?", jdl_native_is_dummy, 0);
 }
 
 static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
@@ -61,11 +65,9 @@ static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
     char *message;
 
     priority = NUM2INT(v_priority);
-    message  = jdl_alloc_safe_string(v_message);
+    message  = StringValueCStr(v_message);
 
     result = sd_journal_print(priority, "%s", message);
-
-    free(message);
 
     return INT2NUM(result);
 }
@@ -102,42 +104,14 @@ static VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
     int result;
     char *message;
 
-    message = jdl_alloc_safe_string(v_message);
+    message = StringValueCStr(v_message);
 
     result = sd_journal_perror(message);
-
-    free(message);
 
     return INT2NUM(result);
 }
 
-/**
- * Remove zeros from string and ensure it's zero-terminated
- */
-static char * jdl_alloc_safe_string(VALUE v_string)
+static VALUE jdl_native_is_dummy()
 {
-    char  *str;
-    size_t len;
-
-    char  *newstr,
-          *ptr;
-    size_t i;
-
-    /* convert to string */
-    StringValue(v_string);
-
-    str = RSTRING_PTR(v_string);
-    len = RSTRING_LEN(v_string);
-
-    newstr = calloc(len + 1, sizeof(char));
-
-    for (i = 0, ptr = newstr; i < len; i++) {
-        if (str[i]) {
-            *(ptr++) = str[i];
-        }
-    }
-
-    *ptr = '\0';
-
-    return newstr;
+    return JOURNALD_NATIVE_SD_JOURNAL_DUMMY ? Qtrue : Qfalse;
 }

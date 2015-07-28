@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -6,6 +8,8 @@ extern "C" {
     #define JOURNALD_NATIVE_SD_JOURNAL_H
 
     #ifdef __linux__
+
+        #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY false
 
         /* do the real stuff */
 
@@ -29,43 +33,23 @@ extern "C" {
             #error Required function sd_journal_perror is missing
         #endif
 
+        /* Do not add C line and file to the log messages */
+        #define SD_JOURNAL_SUPPRESS_LOCATION
         /* include systemd-journal headers */
-
         #include <systemd/sd-journal.h>
 
     #else
 
+        #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY true
+
         #warning Compiling dummy version of the gem for non-Linux OS
 
-        #include <stdlib.h>
-
-        /* use dummy */
-        #define JOURNALD_NATIVE_SYSTEMD_JOURNAL_DUMMY
-
-        /* syslog constants */
-        #define LOG_EMERG   0
-        #define LOG_ALERT   1
-        #define LOG_CRIT    2
-        #define LOG_ERR     3
-        #define LOG_WARNING 4
-        #define LOG_NOTICE  5
-        #define LOG_INFO    6
-        #define LOG_DEBUG   7
-
-        /* iovec */
-        struct iovec {
-            void  *iov_base;    /* Starting address */
-            size_t iov_len;     /* Number of bytes to transfer */
-        };
-
-        int sd_journal_print(int priority, const char *format, ...);
-        int sd_journal_sendv(const struct iovec *iov, int n);
-        int sd_journal_perror(const char *message);
+        #include "sd_journal_dummy.h"
 
     #endif
-
-#endif
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif // JOURNALD_NATIVE_SD_JOURNAL_H

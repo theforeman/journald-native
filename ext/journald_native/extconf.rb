@@ -4,10 +4,11 @@ LIBDIR      = RbConfig::CONFIG['libdir']
 INCLUDEDIR  = RbConfig::CONFIG['includedir']
 
 HEADER_DIRS = [INCLUDEDIR]
-
-LIB_DIRS = [LIBDIR]
+LIB_DIRS    = [LIBDIR]
 
 dir_config('systemd', HEADER_DIRS, LIB_DIRS)
+
+$CFLAGS = '-std=c99'
 
 def have_funcs
   have_funcs = true
@@ -33,4 +34,3 @@ end
 
 create_header
 create_makefile('journald_native')
-
