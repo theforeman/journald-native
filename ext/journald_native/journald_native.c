@@ -1,6 +1,3 @@
-/* Do not add C line and file to the log messages */
-#define SD_JOURNAL_SUPPRESS_LOCATION
-
 #include <ruby.h>
 #include "sd_journal.h"
 
