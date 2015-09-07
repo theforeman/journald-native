@@ -11,14 +11,10 @@ dir_config('systemd', HEADER_DIRS, LIB_DIRS)
 $CFLAGS = '-std=c99'
 
 def have_funcs
-  have_funcs = true
-
   # check functions. redefine const list in sd_journal.h if changed
-  %w(sd_journal_print sd_journal_sendv sd_journal_perror).each do |func|
-    have_funcs &&= have_func(func)
+  %w(sd_journal_print sd_journal_sendv sd_journal_perror).inject(true) do |have_funcs, func|
+    have_funcs && have_func(func)
   end
-
-  have_funcs
 end
 
 # check headers
