@@ -58,52 +58,40 @@ static void jdl_init_methods()
 
 static VALUE jdl_native_print(VALUE v_self, VALUE v_priority, VALUE v_message)
 {
-    int priority, result;
-    char *message;
-
-    priority = NUM2INT(v_priority);
-    message  = StringValueCStr(v_message);
-
-    result = sd_journal_print(priority, "%s", message);
+    int   priority = NUM2INT(v_priority);
+    char* message  = StringValueCStr(v_message);
+    int   result   = sd_journal_print(priority, "%s", message);
 
     return INT2NUM(result);
 }
 
 static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self)
 {
-    struct iovec *msgs;
-    int i;
-    int result;
-
     /* first check everything is a string / convertable to string */
-    for (i = 0; i < argc; i++) {
+    for (int i = 0; i < argc; i++) {
         StringValue(argv[i]); /* you may get a ruby exception here */
     }
 
     /* allocate memory after all checks to avoid possible memory leak */
-    msgs = calloc(argc, sizeof(struct iovec));
+    struct iovec* msgs = xcalloc(argc, sizeof(struct iovec));
 
-    for (i = 0; i < argc; i++) {
+    for (int i = 0; i < argc; i++) {
         VALUE v = argv[i];
         msgs[i].iov_base = RSTRING_PTR(v);
         msgs[i].iov_len  = RSTRING_LEN(v);
     }
 
-    result = sd_journal_sendv(msgs, argc);
+    int result = sd_journal_sendv(msgs, argc);
 
-    free(msgs);
+    xfree(msgs);
 
     return INT2NUM(result);
 }
 
 static VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
 {
-    int result;
-    char *message;
-
-    message = StringValueCStr(v_message);
-
-    result = sd_journal_perror(message);
+    char* message = StringValueCStr(v_message);
+    int   result = sd_journal_perror(message);
 
     return INT2NUM(result);
 }
