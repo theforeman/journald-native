@@ -1,9 +1,5 @@
 #include <stdbool.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef JOURNALD_NATIVE_SD_JOURNAL_H
     #define JOURNALD_NATIVE_SD_JOURNAL_H
 
@@ -47,9 +43,5 @@ extern "C" {
         #include "sd_journal_dummy.h"
 
     #endif
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // JOURNALD_NATIVE_SD_JOURNAL_H
