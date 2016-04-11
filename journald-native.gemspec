@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{systemd-journal logging native lib wrapper}
   # spec.description   = %q{Write a longer description. Optional.}
   spec.homepage      = 'https://github.com/sandfoxme/journald-native'
-  spec.license       = 'MIT'
+  spec.license       = 'LGPL-2.1+'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})

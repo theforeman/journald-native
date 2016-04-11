@@ -50,4 +50,5 @@ does not have this shortcoming.
 
 ### License
 
-Licensed under the MIT License. See ```LICENSE.txt``` for more info
+The gem is available as open source under the terms of the GNU Lesser General Public License, version 2.1
+or later.
