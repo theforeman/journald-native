@@ -24,6 +24,8 @@ to your Gemfile.
 
 Please note that you need a systemd development package installed in your system like `systemd-devel` in Fedora, `libsystemd-dev` in Debian, also may be a separate package for journal in older systems like `libsystemd-journal-dev`.
 
+**NB:** The gem can be installed on non-linux system but it will do nothing there. (Functions will return success without any actual effect)
+
 ## Usage
 
 ```ruby
