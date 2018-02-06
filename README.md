@@ -6,6 +6,24 @@
 A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
 
+## Installation
+
+Run
+
+```sh
+gem install journald-native
+```
+
+or add
+
+```ruby
+gem 'journald-native', '~> 1.0'
+```
+
+to your Gemfile.
+
+Please note that you need a systemd development package installed in your system like `systemd-devel` in Fedora, `libsystemd-dev` in Debian, also may be a separate package for journal in older systems like `libsystemd-journal-dev`.
+
 ## Usage
 
 ```ruby
