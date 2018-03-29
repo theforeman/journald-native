@@ -18,7 +18,7 @@
 #
 
 require 'journald/native/version'
-require_relative '../journald_native'
+require 'journald_native'
 
 module Journald
   module Native
