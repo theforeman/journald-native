@@ -27,7 +27,7 @@ LIB_DIRS    = [LIBDIR]
 
 dir_config('systemd', HEADER_DIRS, LIB_DIRS)
 
-$CFLAGS = '-std=c11'
+$CFLAGS = [$CFLAGS, '-std=c11'].join(' ')
 
 def have_funcs
   # check functions. redefine const list in sd_journal.h if changed
