@@ -11,4 +11,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You can find a copy of the GNU Lesser General Public License
-in COPYING.md.
+in COPYING.md or at <https://www.gnu.org/licenses/>.
