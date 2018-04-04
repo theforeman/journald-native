@@ -1,7 +1,8 @@
 # journald-native
 
 [![Gem](https://img.shields.io/gem/v/journald-native.svg)](https://rubygems.org/gems/journald-native)
-[![Reference Status](https://www.versioneye.com/ruby/journald-native/reference_badge.svg)](https://www.versioneye.com/ruby/journald-native/references)
+[![License](https://img.shields.io/github/license/sandfoxme/journald-native.svg)](https://www.gnu.org/licenses/lgpl-2.1.txt)
+[![Coverity Scan](https://img.shields.io/coverity/scan/15382.svg)](https://scan.coverity.com/projects/sandfoxme-journald-native)
 
 A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
