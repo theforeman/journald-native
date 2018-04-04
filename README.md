@@ -1,6 +1,6 @@
 # journald-native
 
-[![Gem Version](https://badge.fury.io/rb/journald-native.svg)](http://badge.fury.io/rb/journald-native)
+[![Gem](https://img.shields.io/gem/v/journald-native.svg)](https://rubygems.org/gems/journald-native)
 [![Reference Status](https://www.versioneye.com/ruby/journald-native/reference_badge.svg)](https://www.versioneye.com/ruby/journald-native/references)
 
 A systemd-journal native logging lib wrapper.
@@ -70,5 +70,17 @@ does not have this shortcoming.
 
 ### License
 
-The gem is available as open source under the terms of the GNU Lesser General Public License, version 2.1
-or later.
+Copyright (c) 2014 Anton Smirnov
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You can find a copy of the GNU Lesser General Public License
+in COPYING.md or at <https://www.gnu.org/licenses/lgpl-2.1.txt>.
