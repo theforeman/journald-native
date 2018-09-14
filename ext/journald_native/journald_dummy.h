@@ -19,6 +19,11 @@
 
 /* dummy code to be used in sd_journal.h on non-linux system */
 
+
+#ifdef  JOURNALD_NATIVE_COMPILE_DUMMY
+#ifndef JOURNALD_NATIVE_JOURNALD_DUMMY_H
+#define JOURNALD_NATIVE_JOURNALD_DUMMY_H
+
 #include <stdlib.h>
 
 #ifndef LOG_EMERG
@@ -41,6 +46,9 @@ struct jdn_dummy_iovec {
     size_t iov_len;     /* Number of bytes to transfer */
 };
 
-inline int sd_journal_print(int priority, const char *format, ...)  { return 0; }
-inline int sd_journal_sendv(const iovec_t *iov, int n)              { return 0; }
-inline int sd_journal_perror(const char *message)                   { return 0; }
+int sd_journal_print(int priority, const char *format, ...);
+int sd_journal_sendv(const iovec_t *iov, int n);
+int sd_journal_perror(const char *message);
+
+#endif
+#endif

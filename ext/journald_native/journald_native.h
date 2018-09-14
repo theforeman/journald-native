@@ -17,10 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stdbool.h>
+#ifndef JOURNALD_NATIVE_JOURNALD_NATIVE_H
 
-#ifndef JOURNALD_NATIVE_SD_JOURNAL_H
-    #define JOURNALD_NATIVE_SD_JOURNAL_H
+    #include <stdbool.h>
+
+    #define JOURNALD_NATIVE_JOURNALD_NATIVE_H
 
     #ifdef __linux__
 
@@ -59,10 +60,11 @@
     #else
 
         #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY true
+        #define JOURNALD_NATIVE_COMPILE_DUMMY
 
         #warning Compiling dummy version of the gem for non-Linux OS
 
-        #include "sd_journal_dummy.h"
+        #include "journald_dummy.h"
 
     #endif
 

@@ -18,7 +18,7 @@
  */
 
 #include <ruby.h>
-#include "sd_journal.h"
+#include "journald_native.h"
 
 void Init_journald_native();
 
