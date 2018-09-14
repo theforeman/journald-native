@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.11
+
+* Introduce long function names
+* Fix dummy building on FreeBSD [[#4]](https://github.com/sandfoxme/journald-native/issues/4)
+* Fix print() dummy call crash on FreeBSD
+
 ## v1.0.10
 
 * Make require calls rpm-friendly [[#3]](https://github.com/sandfoxme/journald-native/pull/3)
