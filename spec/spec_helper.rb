@@ -1,1 +1,1 @@
-require_relative '../lib/journald/native'
+require 'journald/native'
