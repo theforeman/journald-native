@@ -22,5 +22,10 @@ require 'journald_native'
 
 module Journald
   module Native
+    class << self
+      alias_method :print,  :sd_journal_print
+      alias_method :send,   :sd_journal_send
+      alias_method :perror, :sd_journal_perror
+    end
   end
 end

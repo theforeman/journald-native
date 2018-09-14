@@ -67,9 +67,9 @@ static void jdl_init_constants()
 
 static void jdl_init_methods()
 {
-    rb_define_singleton_method(mNative, "print",  jdl_native_print,  2);
-    rb_define_singleton_method(mNative, "send",   jdl_native_send,  -1); /* -1 to pass as C array */
-    rb_define_singleton_method(mNative, "perror", jdl_native_perror, 1);
+    rb_define_singleton_method(mNative, "sd_journal_print",  jdl_native_print,  2);
+    rb_define_singleton_method(mNative, "sd_journal_send",   jdl_native_send,  -1); /* -1 to pass as C array */
+    rb_define_singleton_method(mNative, "sd_journal_perror", jdl_native_perror, 1);
 
     // dummy detection method
     rb_define_singleton_method(mNative, "dummy?", jdl_native_is_dummy, 0);
