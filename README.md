@@ -17,7 +17,7 @@ gem install journald-native
 or add
 
 ```ruby
-gem 'journald-native', '~> 1.0'
+gem 'journald-native', '~> 1.0.11'
 ```
 
 to your Gemfile.
@@ -59,14 +59,26 @@ Methods of Journald::Native class wrap systemd-journal calls.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
 
 ```ruby
-Journald::Native.send "MESSAGE=message", "PRIORITY=#{Journald::LOG_WARNING}"
-Journald::Native.print Journald::LOG_WARNING, "message"
-Journald::Native.perror "message"
+Journald::Native.sd_journal_send "MESSAGE=message", "PRIORITY=#{Journald::LOG_WARNING}"
+Journald::Native.sd_journal_print Journald::LOG_WARNING, "message"
+Journald::Native.sd_journal_perror "message"
 ```
 
-It is not recommended to use ```print``` and ```perror``` as you may get exception if your string contains
-```'\0'``` byte due to C zero-terminated string format. On the contrary ```send``` uses binary buffers and
-does not have this shortcoming.
+It is not recommended to use `sd_journal_print` and `sd_journal_perror` as you may get exception
+if your string contains `'\0'` byte due to C zero-terminated string format.
+On the contrary `sd_journal_send` uses binary buffers and does not have this shortcoming.
+
+### Short aliases
+
+Versions prior to 1.0.11 used short function names that are available now as aliases.
+They will probably throw a deprecation warning in 1.1 and be removed in 2.0 should these versions ever happen.
+
+`Journald::Native.sd_journal_send` can be called as `Journald::Native.send`  
+`Journald::Native.sd_journal_print` can be called as `Journald::Native.print`  
+`Journald::Native.sd_journal_perror` can be called as `Journald::Native.perror`
+
+**Please note that `send` method is overridden.
+This is a bad practice and a reason why longer names were introduced later**
 
 ### License
 
