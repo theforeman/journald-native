@@ -53,6 +53,9 @@
         /* include systemd-journal headers */
         #include <systemd/sd-journal.h>
 
+        /* use alias for iovec to avoid name conflicts in dummy version*/
+        typedef struct iovec iovec_t;
+
     #else
 
         #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY true

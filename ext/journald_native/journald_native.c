@@ -92,7 +92,7 @@ static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self)
     }
 
     /* allocate memory after all checks to avoid possible memory leak */
-    struct iovec* msgs = xcalloc(argc, sizeof(struct iovec));
+    iovec_t* msgs = xcalloc(argc, sizeof(iovec_t));
 
     for (int i = 0; i < argc; i++) {
         VALUE v = argv[i];
