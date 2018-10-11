@@ -9,16 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Anton Smirnov']
   spec.email         = ['sandfox@sandfox.me']
   spec.summary       = 'systemd-journal logging native lib wrapper'
-  spec.homepage      = 'https://github.com/sandfoxme/journald-native'
+  spec.homepage      = 'https://github.com/theforeman/journald-native'
   spec.license       = 'LGPL-2.1+'
 
-  spec.files         =
-    # Get all files from git
-    # Do not include full text of the license (there is a link),
-    # dot files, tests
-    `git ls-files -z`
-    .split("\x0")
-    .reject{ |file| %r{^(COPYING|\.|spec/)}.match? file }
+  spec.files         = `git ls-files -- {lib,ext}/* *.md`.split("\n")
   spec.require_paths = ['lib']
 
   spec.extensions << 'ext/journald_native/extconf.rb'

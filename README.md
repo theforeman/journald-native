@@ -1,7 +1,6 @@
 # journald-native
 
-[![Gem](https://img.shields.io/gem/v/journald-native.svg)](https://rubygems.org/gems/journald-native)
-[![License](https://img.shields.io/github/license/sandfoxme/journald-native.svg)](https://www.gnu.org/licenses/lgpl-2.1.txt)
+[![Build Status](https://travis-ci.org/theforeman/journald-native.svg?branch=master)](https://travis-ci.org/theforeman/journald-native)
 
 A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
@@ -79,6 +78,10 @@ They will probably throw a deprecation warning in 1.1 and be removed in 2.0 shou
 
 **Please note that `send` method is overridden.
 This is a bad practice and a reason why longer names were introduced later**
+
+### Authors
+
+This library was written by Anton Smirnov and currently maintained by https://www.theforeman.org developers.
 
 ### License
 

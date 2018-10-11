@@ -1,13 +1,17 @@
-# test with minimum and current and previous version of ruby; try default version of rbx
-
+# test compilation and then run tests with dummy mode turned on
 language: ruby
-os:
-  - xenial # we cannot actually test until xenial is added to Travis
+before_install:
+  - sudo apt-get install -y libsystemd-journal-dev
+install: "bundle install"
 rvm:
-  - '1.9.2'
-  - '2.2.4'
-  - '2.3.0'
-  - rbx
+  - 1.9.2
+  - 2.0.0
+  - 2.1.0
+  - 2.2.0
+  - 2.3.0
+  - 2.4.0
 script:
   - bundle exec rake compile
+  - bundle exec rake clean
+  - bundle exec rake compile -- --with-dummy
   - bundle exec rspec
