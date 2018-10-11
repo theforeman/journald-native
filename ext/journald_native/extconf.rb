@@ -47,5 +47,10 @@ unless have_funcs
   have_funcs
 end
 
+if with_config("dummy")
+  $defs.push "-DJOURNALD_NATIVE_COMPILE_DUMMY"
+  $defs.push "-DJOURNALD_NATIVE_SD_JOURNAL_DUMMY"
+end
+
 create_header
 create_makefile('journald_native')
