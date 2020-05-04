@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.extensions << 'ext/journald_native/extconf.rb'
 
-  spec.required_ruby_version = '>= 1.9.2'
+  spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_development_dependency 'bundler', '>= 1.6', '< 3'
   spec.add_development_dependency 'rake'
