@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.12
+
+*May 25, 2020*
+
+* Updated tests for long function names
+* Improvements in CI
+* Pinned bundler to 2.x
+
 ## v1.0.11
 
 *September 14, 2018*
