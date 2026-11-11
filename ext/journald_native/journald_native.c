@@ -31,7 +31,7 @@ static void jdl_init_methods();
 static VALUE jdl_native_print(VALUE self, VALUE priority, VALUE message);
 static VALUE jdl_native_send(int argc, VALUE* argv, VALUE self);
 static VALUE jdl_native_perror(VALUE self, VALUE message);
-static VALUE jdl_native_is_dummy();
+static VALUE jdl_native_is_dummy(VALUE self);
 
 /* globals */
 static VALUE mJournald;
@@ -62,7 +62,7 @@ static void jdl_init_constants()
     rb_define_const(mJournald, "LOG_DEBUG",   INT2NUM(LOG_DEBUG));    /* debug-level messages */
 
     // dummy detection const
-    rb_define_const(mNative,   "IS_DUMMY",    jdl_native_is_dummy());
+    rb_define_const(mNative, "IS_DUMMY", JOURNALD_NATIVE_SD_JOURNAL_DUMMY ? Qtrue : Qfalse);
 }
 
 static void jdl_init_methods()
@@ -115,7 +115,8 @@ static VALUE jdl_native_perror(VALUE v_self, VALUE v_message)
     return INT2NUM(result);
 }
 
-static VALUE jdl_native_is_dummy()
+static VALUE jdl_native_is_dummy(VALUE self)
 {
+    (void)self;
     return JOURNALD_NATIVE_SD_JOURNAL_DUMMY ? Qtrue : Qfalse;
 }
