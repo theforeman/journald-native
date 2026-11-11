@@ -18,3 +18,4 @@ jobs:
     uses: theforeman/actions/.github/workflows/test-gem.yml@v1
     with:
       extra_packages: libsystemd-dev
+      command: bundle exec rake clean && bundle exec rake compile -- --with-dummy && JOURNALD_NATIVE_EXPECT_DUMMY=true bundle exec rake spec
