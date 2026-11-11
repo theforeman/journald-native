@@ -25,11 +25,13 @@
 
     #ifdef __linux__
 
-        #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY false
+        #include "extconf.h"
+
+        #ifndef JOURNALD_NATIVE_SD_JOURNAL_DUMMY
+            #define JOURNALD_NATIVE_SD_JOURNAL_DUMMY false
+        #endif
 
         /* do the real stuff */
-
-        #include "extconf.h"
 
         /* check for extconf results */
 
