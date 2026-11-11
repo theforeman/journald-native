@@ -1,6 +1,7 @@
 # journald-native
 
-[![Build Status](https://travis-ci.org/theforeman/journald-native.svg?branch=master)](https://travis-ci.org/theforeman/journald-native)
+[![CI](https://github.com/theforeman/journald-native/actions/workflows/ruby.yml/badge.svg)](https://github.com/theforeman/journald-native/actions/workflows/ruby.yml)
+[![RuboCop](https://github.com/theforeman/journald-native/actions/workflows/rubocop.yml/badge.svg)](https://github.com/theforeman/journald-native/actions/workflows/rubocop.yml)
 
 A systemd-journal native logging lib wrapper.
 [See sd-journal help for more info](http://www.freedesktop.org/software/systemd/man/sd_journal_print.html)
