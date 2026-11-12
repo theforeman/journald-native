@@ -17,17 +17,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'mkmf'
+require "mkmf"
 
-LIBDIR      = RbConfig::CONFIG['libdir']
-INCLUDEDIR  = RbConfig::CONFIG['includedir']
+LIBDIR      = RbConfig::CONFIG["libdir"]
+INCLUDEDIR  = RbConfig::CONFIG["includedir"]
 
 HEADER_DIRS = [INCLUDEDIR]
 LIB_DIRS    = [LIBDIR]
 
-dir_config('systemd', HEADER_DIRS, LIB_DIRS)
+dir_config("systemd", HEADER_DIRS, LIB_DIRS)
 
-$CFLAGS += ' -std=c11'
+append_cflags("-std=c11")
 
 def have_funcs
   # check functions. redefine const list in sd_journal.h if changed
@@ -37,13 +37,13 @@ def have_funcs
 end
 
 # check headers
-have_header('systemd/sd-journal.h')
+have_header("systemd/sd-journal.h")
 
 # first try to find funcs in systemd
-have_library('systemd')
+have_library("systemd")
 
 unless have_funcs
-  have_library('systemd-journal') # try to fall back to systemd-journal if older systemd
+  have_library("systemd-journal") # try to fall back to systemd-journal if older systemd
   have_funcs
 end
 
@@ -53,4 +53,4 @@ if with_config("dummy")
 end
 
 create_header
-create_makefile('journald_native')
+create_makefile("journald_native")

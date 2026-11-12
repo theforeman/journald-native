@@ -3,6 +3,13 @@ require_relative 'spec_helper'
 # I don't know how to mock inside the C extension so just call real journal methods
 
 RSpec.describe Journald::Native do
+  it "reports whether the extension uses dummy functions" do
+    expected_dummy = ENV.fetch("JOURNALD_NATIVE_EXPECT_DUMMY", RUBY_PLATFORM !~ /linux/ ? "true" : "false") == "true"
+
+    expect(Journald::Native.dummy?).to eq(expected_dummy)
+    expect(Journald::Native::IS_DUMMY).to eq(expected_dummy)
+  end
+
   describe 'sends log entries' do
     it 'calls sd_journal_send()' do
       # long function name

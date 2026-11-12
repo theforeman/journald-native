@@ -17,14 +17,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-require 'journald/native/version'
-require 'journald_native'
+require "journald/native/version"
+require "journald_native"
 
 module Journald
   module Native
     class << self
-      alias_method :print,  :sd_journal_print
-      alias_method :send,   :sd_journal_send
+      alias_method :print, :sd_journal_print
+      alias_method :send, :sd_journal_send
       alias_method :perror, :sd_journal_perror
     end
   end
