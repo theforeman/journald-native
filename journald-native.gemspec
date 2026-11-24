@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sandfox@sandfox.me"]
   spec.summary       = "systemd-journal logging native lib wrapper"
   spec.homepage      = "https://github.com/theforeman/journald-native"
-  spec.license       = "LGPL-2.1+"
+  spec.license       = "LGPL-2.1-or-later"
 
   spec.files         = `git ls-files -- {lib,ext}/* *.md`.split("\n")
   spec.require_paths = ["lib"]
